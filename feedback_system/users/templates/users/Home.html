@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-
+    {% load static %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COURSEOUTCOMES_1007</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Adamina">
-    <link rel="stylesheet" href="assets/css/Contact-Form-Clean.css">
-    <link rel="stylesheet" href="assets/css/Navigation-Clean.css">
-    <link rel="stylesheet" href="assets/css/Registration-Form-with-Photo.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'https://fonts.googleapis.com/css?family=Adamina' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Contact-Form-Clean.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Navigation-Clean.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Registration-Form-with-Photo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
 </head>
 
 <body>
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean">
-            <div class="container"><a class="navbar-brand" href="#"><img src="assets/img/logo.png" style="height:180px;padding:10px;">CVR College of engineering&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container"><a class="navbar-brand" href="#"><img src="{% static 'assets/img/logo.png' %}" style="height:180px;padding:10px;">CVR College of engineering&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div
                     class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav ml-auto">
@@ -25,13 +25,14 @@
             </div>
     </div>
     </nav>
-    </div><img src="assets/img/college-overview.jpg" style="width:90%;height:40%;margin:5%;">
+    </div><img src="{% static 'assets/img/college-overview.jpg' %}" style="width:90%;height:40%;margin:5%;">
     <div class="contact-clean">
         <form method="post">
+            {% csrf_token %}
             <h2 class="text-center">ENTER THE DETAILS</h2>
-            <div class="form-group"><input class="form-control" type="text"><small class="form-text text-danger">Please enter a correct ROLL NUMBER</small></div>
-            <div class="dropdown show"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true" type="button">YEAR</button>
-                <div class="dropdown-menu show" role="menu"><a class="dropdown-item" role="presentation" href="#"><strong>1-1</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>1-2</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>2-1</strong></a>
+            <div class="dropdown show"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true" type="button">SEMESTER</button>
+
+                <div class="dropdown-menu show" role="menu"><a class="dropdown-item" role="presentation" href="{% url 'co' '1-1' %}"><strong>1-1</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>1-2</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>2-1</strong></a>
                     <a
                         class="dropdown-item" role="presentation" href="#"><strong>2-2</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>3-1</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>3-2</strong></a><a class="dropdown-item" role="presentation" href="#"><strong>4-1</strong></a>
                         <a
@@ -41,8 +42,8 @@
             <div class="form-group"><button class="btn btn-primary" type="submit">send </button></div>
         </form>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
 
 </html>
