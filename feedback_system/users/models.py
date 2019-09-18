@@ -22,3 +22,5 @@ class Answers(models.Model):
 class Content(models.Model):
     subid=models.ForeignKey(Subject,on_delete=models.CASCADE)
     content=models.TextField()
+    def __str__(self):
+        return str(self.pk)+self.subid.name

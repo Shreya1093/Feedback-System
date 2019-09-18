@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from users.views import register,validate,temp,co
+from users.views import register,validate,temp,co,home
 from django.contrib.auth import views
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,7 @@ urlpatterns = [
     path('login/validate/', validate,name='validate'),
     path('logout/', views.LoginView.as_view(template_name='users/temp.html'), name='logout'),
     path('temp/', temp, name='temp'),
+    path('home/',home,name='home'),
     path('co/<str:sem>', co, name='co'),
+
 ]+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

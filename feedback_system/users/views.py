@@ -33,15 +33,22 @@ def register(request):
     return render(request,'users/Signup.html')
 
 def home(request):
-    if request.method == 'POST':
-        pass
+   return render(request,'users/Home.html')
 
 def co(request,sem): #co/<int:sem>
     #u=User.objects.get(user_id=request.user.id)
     cid=CourseOutcomes.objects.get(courseid=sem)
     subjects=Subject.objects.filter(courseid=cid)
     content=Content.objects.filter(subid=subjects)
-    return render(request,'users\courseoutcome.html',{'subjects':subjects})
+    sl=list(subjects)
+    cl=[]
+    for s in sl:
+        c = Content.objects.filter(subid=s)
+        for x in c:
+            cl.append(x)
+
+
+    return render(request,'users\courseoutcome.html',{'subjects':sl,'cl':cl})
 
 
 def temp(request):
@@ -49,3 +56,20 @@ def temp(request):
 
 
 
+'''
+for s in sl:
+...     c=Content.objects.filter(subid=s)
+...     for x in c:
+...             l.append(x)
+
+for s in sl:
+...     c=Content.objects.filter(subid=s)
+...     cl.append(c)
+
+
+ for s in sl:
+...     print(s)
+...     for x in cl[i]:
+...             print(x)
+...     i=i+1
+'''
