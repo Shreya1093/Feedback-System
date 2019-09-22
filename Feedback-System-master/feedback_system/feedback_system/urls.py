@@ -23,7 +23,7 @@ from users.views import temp
 from users.views import home
 from users.views import co
 from django.contrib.auth import views
-from users.views  import feedback_create_view
+from users.views  import feedback_create_view,add_answer_view,feedback_save,donesubmitting
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', register, name='register'),
@@ -33,6 +33,10 @@ urlpatterns = [
     path('temp/', temp, name='temp'),
     path('home/',home,name='home'),
     path('co/<str:sem>', co, name='co'),
-    path('feedback/',feedback_create_view),
+    path('feedback/<str:cid>',feedback_create_view,name='feedback'),
+
+    path('feedback/save/<int:qid>',feedback_save,name="feedback_save"),
+    path('ans/',add_answer_view),
+    path('submited/',donesubmitting,name='donesubmitting'),
 
 ]+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

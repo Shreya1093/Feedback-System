@@ -18,16 +18,15 @@ class questions(models.Model):
     question=models.TextField()
     questionid=models.IntegerField()
     def __str__(self):
-        return str(self.question)
+        return str(self.question) + "," + str(self.questionid) + "," + str(self.courseid)
 
 class Answers(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+
     answer=models.CharField(max_length=1)
-    subid=models.ForeignKey(Subject,on_delete=models.CASCADE)
     courseid = models.ForeignKey(CourseOutcomes, on_delete=models.CASCADE,null=True,blank=True)
     questionid=models.ForeignKey(questions,on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
-        return self.user.username+" Answer"+" for "+self.subid.name
+        return str(self.questionid)
 class Content(models.Model):
     subid=models.ForeignKey(Subject,on_delete=models.CASCADE)
     content=models.TextField()

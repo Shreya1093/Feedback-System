@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 
 <head>
      {% load static %}
@@ -14,14 +14,14 @@
     <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
 </head>
 
-<body>
+<form>
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean">
-            <div class="container"><a class="navbar-brand" href="#"><img src="assets/img/logo.png" style="height:180px;padding:10px;">CVR College of engineering&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container"><a class="navbar-brand" href="#"><img src="{% static 'assets/img/logo.png' %}" style="height:180px;padding:10px;">CVR College of engineering&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div
                     class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="color:rgb(0,0,0);font-size:20px;font-family:Adamina, serif;">Home</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="{% url 'home' %}" style="color:rgb(0,0,0);font-size:20px;font-family:Adamina, serif;">Home</a></li>
                     </ul>
             </div>
     </div>
@@ -29,22 +29,33 @@
     </div>
     <h1 style="padding-left:40%;">FEED-BACK FORM</h1>
     <div class="jumbotron" style="background-color:rgb(235,238,241);margin:5%;">
-        <form  method='POST'>{% csrf_token %}
-            {% csrf_token %}
-            <div style="padding:2%;">
                 <p style="font-family:Adamina, serif;font-size:18px;">Extraordinary:5<br>
                 Good:4<br>
                 Average:3<br>
                 Below Average:2<br>
                 Bad:1</p>
+
+
+
                 {% for x in q%}
-                {{x}}
-                <input type="number" min="1" max = "5" id = "fid" placeholder="Enter Feed Back"><br>
+                <form  method='GET' action="{% url 'feedback_save' x.pk %}">
+                {% csrf_token %}
+                <div style="padding:2%;">
+                {{x.question}}
+                    <input type="number" min="1" max = "5" name ="ans"  placeholder="EnterFeedBack">
+                {% if x in l %}
+                </div><input  type="Submit" disabled></input></form>
+                {% else %}
+                </div><input  type="Submit"></input></form>
+                {% endif %}
+
                 {% endfor %}
-           </div><button class="btn btn-primary" type="button">Submit</button></form>
+
+
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
 
 </html>

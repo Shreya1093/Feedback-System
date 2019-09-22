@@ -17,13 +17,14 @@
 <body>
     <nav class="navbar navbar-light navbar-expand-md navigation-clean">
         <div class="container"><a class="navbar-brand" href="#"><img src="{% static 'assets/img/logo.png' %}" style="height:180px;padding:10px;">CVR College of engineering&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div
-                class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="color:rgb(0,0,0);font-size:20px;font-family:Adamina, serif;">Home</a></li>
-                </ul>
+                 <div
+                    class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item" role="presentation"><a class="nav-link" href ="{% url 'home' %}" style="color:rgb(0,0,0);font-size:20px;font-family:Adamina, serif;">Home</a></li>
+                    </ul>
+                 </div>
         </div>
-        </div>
+
     </nav>
     <div class="jumbotron" style="background-color:rgb(235,238,241);margin:5%;">
         <h1 style="font-family:Adamina, serif;padding-left:25%;">Sign Up</h1>
