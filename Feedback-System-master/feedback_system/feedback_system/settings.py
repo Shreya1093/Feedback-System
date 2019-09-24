@@ -123,3 +123,5 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,"static"),
     '/feedback_system/static',
 ]
+LOGIN_REDIRECT_URL='login'
+LOGIN_URL='login'

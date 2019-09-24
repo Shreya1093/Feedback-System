@@ -1,7 +1,11 @@
+import xlwt
+
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .models import CourseOutcomes,Subject,Answers,Content,questions
+from .models import CourseOutcomes,Subject,Answers,Content,questions,ProgramOutcomess,POquestions,PAnswers
 from .form import feedbackform
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -60,6 +64,12 @@ def co(request,sem): #co/<int:sem>
 
     return render(request,'users\courseoutcome.html',{'subjects':sl,'cl':cl,'cid':cid})
 
+
+@login_required
+def po(request):
+    poutcome=ProgramOutcomess.objects.all()
+    pid=ProgramOutcomess.objects.all()
+    return render(request,'users\ProgramOutcomesPage.html',{'pid':pid})
 @login_required
 def feedback_save(request,qid):
     #if request.method == "POST":
@@ -68,30 +78,32 @@ def feedback_save(request,qid):
         cid=ques.courseid
         ansobj = Answers(answer=a,courseid=cid,questionid=ques)
         ansobj.save()
-        return feedback_create_view(request,ques,cid)
-def temp(request):
-    return render(request,'users/temp.html')
-
-
-
-
+        print('in saveeeeeeee---------------------------',a,ques,cid,'----------------')
+        return feedback_create_view(request,cid,ques)
 
 @login_required
 def temp(request):
     return render(request,'users/temp.html')
 
 
+@login_required
+def poco(request):
+    return render(request,'users/ProgramOutcome.html')
+
+@login_required
 def donesubmitting(request):
     global l
     l=[]
     return logoutview(request)
 
+
+@login_required
 def logoutview(request):
     logout(request)
     return render(request,'users/Login.html')
 
 @login_required
-def feedback_create_view(request,ques=None,cid=None):
+def feedback_create_view(request,cid=None,ques=None):
     '''
     form=feedbackform(request.POST or None)
 
@@ -100,11 +112,11 @@ def feedback_create_view(request,ques=None,cid=None):
     '''
     a=CourseOutcomes.objects.all()
     if cid in a:
-        c=cid
+        c = cid
     else:
-        c= CourseOutcomes.objects.get(courseid=cid)
+        c = CourseOutcomes.objects.get(courseid=cid)
     q = questions.objects.filter(courseid=c)
-
+    print('---------------------------',q,c,'----------------')
     if ques != None:
      #   l[ques]=True
         l.append(ques)
@@ -123,6 +135,74 @@ def add_answer_view(request):
     print(list(User.objects.all()))
     #Answers(answer = '1',courseid = CourseOutcomes(),questionid = questions()).save()
     return home(request)
+
+def export_users_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="users.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Users')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['answer', 'courseid', 'questionid']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    rows = Answers.objects.all().values_list('answer', 'courseid', 'questionid')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
+
+
+@login_required
+def feedback_create_view1(request,pid=None,pquestion=None):
+    '''
+    form=feedbackform(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+    '''
+   # a = ProgramOutcomess.objects.all()
+    p = POquestions.objects.all()
+   # if cid in a:
+     #   c=cid
+    #else:
+      #  c= CourseOutcomes.objects.get(courseid=cid)
+    #q = questions.objects.filter(courseid=c)
+    #print('---------------------------',q,c,'----------------')
+    if pquestion != None:
+        #l[pquestion]=True
+        l.append(pquestion)
+
+    context={
+        "p" : p,
+        'l':l,
+    }
+    return render(request,"users/pofeedback.html",context)
+
+@login_required
+def feedback_save1(request,pid):
+    #if request.method == "POST":
+        a = request.GET['ans']
+        ques=POquestions.objects.get(pk=pid)
+        ansobj = PAnswers(answer=a,pid=ques)
+        ansobj.save()
+        return feedback_create_view1(request,pid,ques)
+
+
 
 '''
 for s in sl:
