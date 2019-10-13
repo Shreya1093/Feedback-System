@@ -40,16 +40,13 @@
 
                 {% for x in q%}
                 <form  method='GET' action="{% url 'feedback_save' x.pk %}">
-                {% csrf_token %}
+                    {% csrf_token %}
                 <div style="padding:2%;">
                 {{x.question}}
-                    <input type="number" min="1" max = "5" name ="ans"  placeholder="EnterFeedBack">
-                {% if x in l %}
-                </div><input  type="Submit" disabled></input></form>
-                {% else %}
-                </div><input  type="Submit"></input></form>
-                {% endif %}
-
+                <input type="number" min="1" max = "5" name ="ans"  placeholder="EnterFeedBack">
+                </div>
+                <input  type="Submit"></input>
+                </form>
                 {% endfor %}
 
 

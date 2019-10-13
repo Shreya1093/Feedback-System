@@ -25,7 +25,7 @@ from users.views import temp
 from users.views import home
 from users.views import co,po
 from django.contrib.auth import views
-from users.views  import feedback_create_view,add_answer_view,feedback_save,donesubmitting,export_users_xls,poco,feedback_create_view1,feedback_save1
+from users.views  import feedback_create_view,add_answer_view,feedback_save,donesubmitting,export_users_xls,poco,feedback_create_view1,feedback_save1,index1,pindex
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', register, name='register'),
@@ -44,5 +44,8 @@ urlpatterns = [
     path('export/xls/', export_users_xls, name='export_users_xls'),
     path('pofeedback/',feedback_create_view1,name='pofeedback'),
     path('feedback/save1/<int:pid>', feedback_save1, name="feedback_save1"),
+    #path('index/<str:cid>',feedback_create_view,name='index'),
+    path('index',index1,name='index'),
+    path('pindex', pindex, name='pindex'),
 
               ]+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

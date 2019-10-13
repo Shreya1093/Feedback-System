@@ -17,16 +17,36 @@
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean">
             <div class="container"><a class="navbar-brand" href="#"><img src="{% static 'assets/img/logo.png' %}" style="height:180px;padding:10px;">CVR College of engineering&nbsp;</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <img src="{% static 'assets/img/college-overview.jpg' %}" style="width:50%;height:50%;margin:5%;">
-    </div>
-        </nav></div>
-         <div>
-            <a href="{% url 'co' '4-2' %}">
-                <button class="btn btn-primary" type="submit" style="margin-left:45%;font-size:20px;"  >CourseOutcomes</button></a></div>
-          <div>  <a href="{% url 'po' %}">
-              <button class="btn btn-primary" type="submit" style="margin-left:45%;font-size:20px;"  >ProgramOutcomes</button></a></div>
-    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
-    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
-</body>
 
-</html>
+                    <div
+                        class="collapse navbar-collapse" id="navcol-1">
+                        <ul class="nav navbar-nav ml-auto">
+
+                            <li class="nav-item" role="presentation"><a class="nav-link" href ="{% url 'logout' %}" style="color:rgb(0,0,0);font-size:20px;font-family:Adamina, serif;">Logout</a></li>
+                        </ul>
+                </div>
+    </div>
+    </nav>
+    </div>
+
+    <h1 style="padding-left:40%;">FEED-BACK FORM</h1>
+    <div class="jumbotron" style="background-color:rgb(235,238,241);margin:5%;">
+                <p style="font-family:Adamina, serif;font-size:18px;">Extraordinary->5:::
+                Good->4:::
+                Average->3:::
+                Below Average->2:::
+                Bad->1</p>
+
+
+    <form method="POST" action="{ % url 'logout' %}" >
+        {% csrf_token %}
+    {% for y in context.p %}
+    {{ y.pquestion }}<br><br>
+
+    {% endfor %}
+
+         {{ pform.as_p }}
+    <input type="submit" >
+    </form>
+
+</div>

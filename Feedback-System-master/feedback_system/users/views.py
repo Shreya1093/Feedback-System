@@ -9,6 +9,60 @@ from .models import CourseOutcomes,Subject,Answers,Content,questions,ProgramOutc
 from .form import feedbackform
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
+
+@login_required()
+def feedback_create_view(request, cid=None, ques=None):
+    '''
+    form=feedbackform(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+    '''
+    a = CourseOutcomes.objects.all()
+    if cid in a:
+        c = cid
+    else:
+        c = CourseOutcomes.objects.get(courseid=cid)
+    q = questions.objects.filter(courseid=c)
+    print('---------------------Question-', q, '----------------')
+    if ques != None:
+        #   l[ques]=True
+        l.append(ques)
+    context = {
+        "q": q,
+        'l': l,
+    }
+    # questionsFormSet = modelformset_factory(questions,fields={'question'})
+    AnswersFormSet = modelformset_factory(Answers, fields=('answer',), extra=len(list(q)))
+
+    form = AnswersFormSet(queryset=Answers.objects.none())
+    if request.method == "POST":
+        form = AnswersFormSet(request.POST)
+        s = form.save()
+
+        print('-----------------', s)
+
+        instances = form.save(commit=False)
+        print('-----------------------instances------', instances)
+        for instance, x in zip(instances, q):
+            instance.question = x
+            print('---------------------------', instance, x, '----------------------')
+            print('--------saving----------', instance.save())
+
+    # return render(request,'users/index.html',{'form':form})
+
+    return render(request, "users/index.html", {'form': form, 'context': context})
+
+@login_required
+def index1(request):
+    AnswersFormSet = modelformset_factory(Answers,fields={'question','answer'})
+
+    form = AnswersFormSet(queryset=Answers.objects.none())
+    if request.method == "POST":
+        form = AnswersFormSet(request.POST)
+        instances = form.save() 
+    return render(request,'users/index.html',{'form':form})
 
 '''
 def loginView(request):
@@ -78,7 +132,7 @@ def feedback_save(request,qid):
         cid=ques.courseid
         ansobj = Answers(answer=a,courseid=cid,questionid=ques)
         ansobj.save()
-        print('in saveeeeeeee---------------------------',a,ques,cid,'----------------')
+        #print('in saveeeeeeee---------------------------',a,ques,cid,'----------------')
         return feedback_create_view(request,cid,ques)
 
 @login_required
@@ -102,29 +156,10 @@ def logoutview(request):
     logout(request)
     return render(request,'users/Login.html')
 
-@login_required
-def feedback_create_view(request,cid=None,ques=None):
-    '''
-    form=feedbackform(request.POST or None)
-
-    if form.is_valid():
-        form.save()
-    '''
-    a=CourseOutcomes.objects.all()
-    if cid in a:
-        c = cid
-    else:
-        c = CourseOutcomes.objects.get(courseid=cid)
-    q = questions.objects.filter(courseid=c)
-    print('---------------------------',q,c,'----------------')
-    if ques != None:
-     #   l[ques]=True
-        l.append(ques)
-    context={
-        "q" : q,
-        'l':l,
-    }
-    return render(request,"users/feedback.html",context)
+def xyz(request,qid):
+    ques=questions.objects.get(pk=qid)
+    cid=ques.courseid
+    return feedback_create_view(request)
 
 
 
@@ -132,7 +167,7 @@ def feedback_create_view(request,cid=None,ques=None):
 @login_required
 def add_answer_view(request):
     temp =  request.GET
-    print(list(User.objects.all()))
+    #print(list(User.objects.all()))
     #Answers(answer = '1',courseid = CourseOutcomes(),questionid = questions()).save()
     return home(request)
 
@@ -191,14 +226,44 @@ def feedback_create_view1(request,pid=None,pquestion=None):
         "p" : p,
         'l':l,
     }
-    return render(request,"users/pofeedback.html",context)
+    PAnswersFormSet = modelformset_factory(PAnswers, fields=('panswer',), extra=len(list(p)))
+
+    pform = PAnswersFormSet(queryset=PAnswers.objects.none())
+    if request.method == "POST":
+        pform = PAnswersFormSet(request.POST)
+        s = pform.save()
+
+        print('-----------------', s)
+
+        instances = pform.save(commit=False)
+        print('-----------------------instances------', instances)
+        for instance, y in zip(instances, p):
+            instance.pquestion = y
+            print('---------------------------', instance, y, '----------------------')
+            print('--------saving----------', instance.save())
+
+    # return render(request,'users/index.html',{'form':form})
+
+    return render(request, "users/pindex.html", {'pform': pform, 'context': context})
+
+@login_required
+def pindex(request):
+    PAnswersFormSet = modelformset_factory(PAnswers,fields={'pquestion','panswer'})
+
+    pform = PAnswersFormSet(queryset=PAnswers.objects.none())
+    if request.method == "POST":
+        pform = PAnswersFormSet(request.POST)
+        instances = pform.save()
+    return render(request,'users/pindex.html',{'pform':pform})
+
+
 
 @login_required
 def feedback_save1(request,pid):
     #if request.method == "POST":
         a = request.GET['ans']
         ques=POquestions.objects.get(pk=pid)
-        ansobj = PAnswers(answer=a,pid=ques)
+        ansobj = PAnswers(panswer=a,pid=ques)
         ansobj.save()
         return feedback_create_view1(request,pid,ques)
 
